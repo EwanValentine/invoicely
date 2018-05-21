@@ -1,0 +1,51 @@
+service: invoicely
+
+provider:
+  name: aws
+  runtime: go1.x
+  region: eu-west-1
+  environment:
+    REGION: "eu-west-1"
+  iamRoleStatements:
+  - Effect: Allow
+    Action:
+      - dynamodb:Query
+      - dynamodb:Scan
+      - dynamodb:GetItem
+      - dynamodb:PutItem
+      - dynamodb:UpdateItem
+      - dynamodb:DeleteItem
+    Resource: "arn:aws:dynamodb:eu-west-1:*:table/*"
+
+package:
+ exclude:
+   - ./**
+ include:
+   - ./bin/**
+
+functions:
+  create-client:
+    handler: bin/create-client
+    events:
+      - http:
+          path: createClient
+          method: post
+          cors:
+            origins:
+            - '*'
+
+resources:
+  Resources:
+    clientsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: Clients
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
