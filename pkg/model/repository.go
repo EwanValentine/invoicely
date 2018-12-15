@@ -35,7 +35,7 @@ func (repository *ClientRepository) Store(client *Client) error {
 func (repository *ClientRepository) Fetch(key string) (*Client, error) {
 	var client *Client
 	result, err := repository.Conn.GetItem(&dynamodb.GetItemInput{
-		TableName: aws.String("Metrics"),
+		TableName: aws.String("Clients"),
 		Key: map[string]*dynamodb.AttributeValue{
 			"ID": {
 				S: aws.String(key),
