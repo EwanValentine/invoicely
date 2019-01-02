@@ -17,6 +17,10 @@ provider:
       - dynamodb:DeleteItem
     Resource: "arn:aws:dynamodb:eu-west-1:*:table/*"
 
+custom:
+  client:
+    bucketName: invoicely.com
+
 package:
  exclude:
    - ./**
@@ -28,8 +32,88 @@ functions:
     handler: bin/create-client
     events:
       - http:
-          path: createClient
+          path: clients
           method: post
+          cors:
+            origins:
+            - '*'
+
+  fetch-clients:
+    handler: bin/fetch-clients
+    events:
+      - http:
+        path: clients
+        method: get
+        cors:
+          origins:
+          - '*'
+
+  fetch-client:
+    handler: bin/fetch-client
+    events:
+      - http:
+        path: clients/{id}
+        method: get
+        cors:
+          origins:
+          - '*'
+
+  create-sprint:
+    handler: bin/create-sprint
+    events:
+      - http:
+          path: sprints
+          method: post
+          cors:
+            origins:
+            - '*'
+  
+  fetch-sprints:
+    handler: bin/fetch-sprints
+    events:
+      - http:
+        path: sprints
+        method: get
+        cors:
+          origins:
+          - '*'
+
+  fetch-sprint:
+    handler: bin/fetch-client
+    events:
+      - http:
+        path: sprints/{sprint}
+        method: get
+        cors:
+          origins:
+          - '*'
+  
+  create-item:
+    handler: bin/create-item
+    events:
+      - http:
+          path: items
+          method: post
+          cors:
+            origins:
+            - '*'
+
+  fetch-item:
+    handler: bin/fetch-item
+    events:
+      - http:
+          path: items/{item}
+          method: get
+          cors:
+            origins:
+            - '*'
+
+  fetch-items:
+    handler: bin/fetch-items
+    events:
+      - http:
+          path: items
+          method: get
           cors:
             origins:
             - '*'
@@ -40,6 +124,32 @@ resources:
       Type: AWS::DynamoDB::Table
       Properties:
         TableName: Clients
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+    sprintsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: Sprints
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+    itemsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: Items
         AttributeDefinitions:
           - AttributeName: id
             AttributeType: S
