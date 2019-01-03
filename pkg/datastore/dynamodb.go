@@ -68,7 +68,7 @@ func (ddb *DynamoDB) Get(key string, castTo interface{}) error {
 	result, err := ddb.conn.GetItem(&dynamodb.GetItemInput{
 		TableName: aws.String(ddb.table),
 		Key: map[string]*dynamodb.AttributeValue{
-			"ID": {
+			"id": {
 				S: aws.String(key),
 			},
 		},

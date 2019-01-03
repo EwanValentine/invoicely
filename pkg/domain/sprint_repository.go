@@ -11,7 +11,7 @@ type Sprint struct {
 	ID        string    `json:"id"`
 	StartDate time.Time `json:"start_date"`
 	EndDate   time.Time `json:"end_date"`
-	Client    string    `json:"sprint"`
+	Client    string    `json:"client"`
 }
 
 // SprintRepository -
