@@ -1,6 +1,7 @@
 package domain
 
 import (
+	"github.com/EwanValentine/invoicely/pkg/datastore"
 	uuid "github.com/satori/go.uuid"
 )
 
@@ -18,12 +19,12 @@ type Item struct {
 
 // ItemRepository interfaces with items table
 type ItemRepository struct {
-	datastore Datastore
+	datastore datastore.Datastore
 }
 
 // NewItemRepository returns a new instance of item repository
-func NewItemRepository(datastore Datastore) *ItemRepository {
-	return &ItemRepository{datastore: datastore}
+func NewItemRepository(ds datastore.Datastore) *ItemRepository {
+	return &ItemRepository{datastore: ds}
 }
 
 // Get a single item

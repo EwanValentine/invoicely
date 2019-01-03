@@ -1,6 +1,7 @@
 package domain
 
 import (
+	"github.com/EwanValentine/invoicely/pkg/datastore"
 	uuid "github.com/satori/go.uuid"
 )
 
@@ -12,21 +13,14 @@ type Client struct {
 	Rate        int32  `json:"rate"`
 }
 
-// Datastore -
-type Datastore interface {
-	List(castTo interface{}) error
-	Get(key string, castTo interface{}) error
-	Store(item interface{}) error
-}
-
 // NewClientRepository instance
-func NewClientRepository(datastore Datastore) *ClientRepository {
-	return &ClientRepository{datastore: datastore}
+func NewClientRepository(ds datastore.Datastore) *ClientRepository {
+	return &ClientRepository{datastore: ds}
 }
 
 // ClientRepository stores and fetches items
 type ClientRepository struct {
-	datastore Datastore
+	datastore datastore.Datastore
 }
 
 // Get a single client

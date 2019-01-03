@@ -7,9 +7,9 @@ import (
 
 	"github.com/aws/aws-lambda-go/lambda"
 
+	"github.com/EwanValentine/invoicely/functions/items/domain"
 	"github.com/EwanValentine/invoicely/pkg/datastore"
 	httpdelivery "github.com/EwanValentine/invoicely/pkg/delivery/http"
-	"github.com/EwanValentine/invoicely/pkg/domain"
 )
 
 // ItemRepository -
@@ -52,7 +52,7 @@ func (h *Handler) Store(request httpdelivery.Req) (httpdelivery.Res, error) {
 	if err := httpdelivery.ParseBody(request, &item); err != nil {
 		return httpdelivery.ErrResponse(err, http.StatusBadRequest)
 	}
-	
+
 	if err := h.repository.Store(item); err != nil {
 		return httpdelivery.ErrResponse(err, http.StatusInternalServerError)
 	}

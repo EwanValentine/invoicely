@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"testing"
 
+	"github.com/EwanValentine/invoicely/functions/clients/domain"
 	httpdelivery "github.com/EwanValentine/invoicely/pkg/delivery/http"
-	"github.com/EwanValentine/invoicely/pkg/domain"
 	"github.com/stretchr/testify/assert"
 )
 

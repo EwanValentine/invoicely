@@ -3,6 +3,7 @@ package domain
 import (
 	"time"
 
+	"github.com/EwanValentine/invoicely/pkg/datastore"
 	uuid "github.com/satori/go.uuid"
 )
 
@@ -16,12 +17,12 @@ type Sprint struct {
 
 // SprintRepository -
 type SprintRepository struct {
-	datastore Datastore
+	datastore datastore.Datastore
 }
 
 // NewSprintRepository -
-func NewSprintRepository(datastore Datastore) *SprintRepository {
-	return &SprintRepository{datastore: datastore}
+func NewSprintRepository(ds datastore.Datastore) *SprintRepository {
+	return &SprintRepository{datastore: ds}
 }
 
 // Get a single sprint by id
