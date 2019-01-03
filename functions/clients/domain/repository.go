@@ -5,14 +5,6 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
-// Client model
-type Client struct {
-	ID          string `json:"id"`
-	Name        string `json:"name"`
-	Description string `json:"description"`
-	Rate        int32  `json:"rate"`
-}
-
 // NewClientRepository instance
 func NewClientRepository(ds datastore.Datastore) *ClientRepository {
 	return &ClientRepository{datastore: ds}

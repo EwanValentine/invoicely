@@ -7,9 +7,9 @@ import (
 
 	"github.com/aws/aws-lambda-go/lambda"
 
+	"github.com/EwanValentine/invoicely/functions/sprints/domain"
 	"github.com/EwanValentine/invoicely/pkg/datastore"
 	httpdelivery "github.com/EwanValentine/invoicely/pkg/delivery/http"
-	"github.com/EwanValentine/invoicely/pkg/domain"
 )
 
 // SprintRepository -
