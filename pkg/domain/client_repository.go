@@ -1,5 +1,9 @@
 package domain
 
+import (
+	uuid "github.com/satori/go.uuid"
+)
+
 // Client model
 type Client struct {
 	ID          string `json:"id"`
@@ -36,6 +40,8 @@ func (r *ClientRepository) Get(id string) (*Client, error) {
 
 // Store a new client
 func (r *ClientRepository) Store(client *Client) error {
+	id := uuid.NewV4()
+	client.ID = id.String()
 	return r.datastore.Store(client)
 }
 

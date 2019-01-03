@@ -1,5 +1,9 @@
 package domain
 
+import (
+	uuid "github.com/satori/go.uuid"
+)
+
 // Item model
 type Item struct {
 	ID          string `json:"id"`
@@ -42,5 +46,7 @@ func (r *ItemRepository) List() (*[]Item, error) {
 
 // Store a new item
 func (r *ItemRepository) Store(item *Item) error {
+	id := uuid.NewV4()
+	item.ID = id.String()
 	return r.datastore.Store(item)
 }

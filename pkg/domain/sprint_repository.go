@@ -1,6 +1,10 @@
 package domain
 
-import "time"
+import (
+	"time"
+
+	uuid "github.com/satori/go.uuid"
+)
 
 // Sprint model
 type Sprint struct {
@@ -31,6 +35,8 @@ func (r *SprintRepository) Get(id string) (*Sprint, error) {
 
 // Store a new sprint
 func (r *SprintRepository) Store(sprint *Sprint) error {
+	id := uuid.NewV4()
+	sprint.ID = id.String()
 	return r.datastore.Store(sprint)
 }
 

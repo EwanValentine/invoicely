@@ -17,10 +17,6 @@ provider:
       - dynamodb:DeleteItem
     Resource: "arn:aws:dynamodb:eu-west-1:*:table/*"
 
-custom:
-  client:
-    bucketName: invoicely.com
-
 package:
  exclude:
    - ./**
@@ -29,94 +25,94 @@ package:
 
 functions:
   create-client:
-    handler: bin/create-client
+    handler: bin/clients
+    environment:
+      DB_TABLE: Clients
     events:
       - http:
           path: clients
           method: post
-          cors:
-            origins:
-            - '*'
+          cors: true
 
   fetch-clients:
-    handler: bin/fetch-clients
+    handler: bin/clients
+    environment:
+      DB_TABLE: Clients
     events:
       - http:
-        path: clients
-        method: get
-        cors:
-          origins:
-          - '*'
+          path: clients
+          method: get
+          cors: true
 
   fetch-client:
-    handler: bin/fetch-client
+    handler: bin/clients
+    environment:
+      DB_TABLE: Clients
     events:
       - http:
-        path: clients/{id}
-        method: get
-        cors:
-          origins:
-          - '*'
+          path: clients/{id}
+          method: get
+          cors: true
 
   create-sprint:
-    handler: bin/create-sprint
+    handler: bin/sprints
+    environment:
+      DB_TABLE: Sprints
     events:
       - http:
           path: sprints
           method: post
-          cors:
-            origins:
-            - '*'
+          cors: true
   
   fetch-sprints:
-    handler: bin/fetch-sprints
+    handler: bin/sprints
+    environment:
+      DB_TABLE: Sprints
     events:
       - http:
-        path: sprints
-        method: get
-        cors:
-          origins:
-          - '*'
+          path: sprints
+          method: get
+          cors: true
 
   fetch-sprint:
-    handler: bin/fetch-client
+    handler: bin/sprints
+    environment:
+      DB_TABLE: Sprints
     events:
       - http:
-        path: sprints/{sprint}
-        method: get
-        cors:
-          origins:
-          - '*'
+          path: sprints/{id}
+          method: get
+          cors: true
   
   create-item:
     handler: bin/create-item
+    environment:
+      DB_NAME: Item
     events:
       - http:
           path: items
           method: post
-          cors:
-            origins:
-            - '*'
-
-  fetch-item:
-    handler: bin/fetch-item
-    events:
-      - http:
-          path: items/{item}
-          method: get
-          cors:
-            origins:
-            - '*'
+          cors: true
 
   fetch-items:
-    handler: bin/fetch-items
+    handler: bin/fetch-item
+    environment:
+      DB_NAME: Item
     events:
       - http:
           path: items
           method: get
-          cors:
-            origins:
-            - '*'
+          cors: true
+
+  fetch-item:
+    handler: bin/fetch-items
+    environment:
+      DB_NAME: Item
+    events:
+      - http:
+          path: items/{id}
+          method: get
+          cors: true
 
 resources:
   Resources:
