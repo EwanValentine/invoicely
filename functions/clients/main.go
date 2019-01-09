@@ -5,18 +5,17 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/aws/aws-lambda-go/lambda"
-
-	"github.com/EwanValentine/invoicely/functions/clients/domain"
+	"github.com/EwanValentine/invoicely/functions/clients/model"
 	"github.com/EwanValentine/invoicely/pkg/datastore"
-	httpdelivery "github.com/EwanValentine/invoicely/pkg/delivery/http"
+	httpdelivery "github.com/EwanValentine/invoicely/pkg/http"
+	"github.com/aws/aws-lambda-go/lambda"
 )
 
 // ClientRepository -
 type ClientRepository interface {
-	Get(id string) (*domain.Client, error)
-	List() (*[]domain.Client, error)
-	Store(client *domain.Client) error
+	Get(id string) (*model.Client, error)
+	List() (*[]model.Client, error)
+	Store(client *model.Client) error
 }
 
 // Handler -
@@ -26,7 +25,7 @@ type Handler struct {
 
 // Store a resource
 func (h *Handler) Store(request httpdelivery.Req) (httpdelivery.Res, error) {
-	var client *domain.Client
+	var client *model.Client
 
 	if err := httpdelivery.ParseBody(request, &client); err != nil {
 		return httpdelivery.ErrResponse(err, http.StatusBadRequest)
@@ -71,7 +70,7 @@ func main() {
 		log.Panic(err)
 	}
 	ddb := datastore.NewDynamoDB(conn, os.Getenv("DB_TABLE"))
-	repository := domain.NewClientRepository(ddb)
+	repository := model.NewClientRepository(ddb)
 	handler := &Handler{repository}
 	router := httpdelivery.Router(handler)
 	lambda.Start(router)

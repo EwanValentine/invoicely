@@ -5,26 +5,26 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/EwanValentine/invoicely/functions/sprints/domain"
-	httpdelivery "github.com/EwanValentine/invoicely/pkg/delivery/http"
+	"github.com/EwanValentine/invoicely/functions/sprints/model"
+	httpdelivery "github.com/EwanValentine/invoicely/pkg/http"
 	"github.com/stretchr/testify/assert"
 )
 
 type MockSprintRepository struct{}
 
-func (r *MockSprintRepository) Get(id string) (*domain.Sprint, error) {
-	return &domain.Sprint{
+func (r *MockSprintRepository) Get(id string) (*model.Sprint, error) {
+	return &model.Sprint{
 		Client: "def456",
 	}, nil
 }
 
-func (r *MockSprintRepository) Store(sprint *domain.Sprint) error {
+func (r *MockSprintRepository) Store(sprint *model.Sprint) error {
 	return nil
 }
 
-func (r *MockSprintRepository) List() (*[]domain.Sprint, error) {
-	return &[]domain.Sprint{
-		domain.Sprint{},
+func (r *MockSprintRepository) List() (*[]model.Sprint, error) {
+	return &[]model.Sprint{
+		model.Sprint{},
 	}, nil
 }
 
@@ -66,7 +66,7 @@ func TestCanFetchSprint(t *testing.T) {
 	response, err := h.Get("abc123", request)
 	assert.NoError(t, err)
 	assert.Equal(t, http.StatusOK, response.StatusCode)
-	var res map[string]*domain.Sprint
+	var res map[string]*model.Sprint
 	err = json.Unmarshal([]byte(response.Body), &res)
 	assert.NoError(t, err)
 	assert.Equal(t, "def456", res["sprint"].Client)

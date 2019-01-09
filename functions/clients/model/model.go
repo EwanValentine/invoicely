@@ -1,4 +1,4 @@
-package domain
+package model
 
 // Client model
 type Client struct {

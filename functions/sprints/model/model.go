@@ -1,4 +1,4 @@
-package domain
+package model
 
 // Item model
 type Item struct {

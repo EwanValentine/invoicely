@@ -5,18 +5,17 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/aws/aws-lambda-go/lambda"
-
-	"github.com/EwanValentine/invoicely/functions/sprints/domain"
+	"github.com/EwanValentine/invoicely/functions/sprints/model"
 	"github.com/EwanValentine/invoicely/pkg/datastore"
-	httpdelivery "github.com/EwanValentine/invoicely/pkg/delivery/http"
+	httpdelivery "github.com/EwanValentine/invoicely/pkg/http"
+	"github.com/aws/aws-lambda-go/lambda"
 )
 
 // SprintRepository -
 type SprintRepository interface {
-	Get(id string) (*domain.Sprint, error)
-	List() (*[]domain.Sprint, error)
-	Store(sprint *domain.Sprint) error
+	Get(id string) (*model.Sprint, error)
+	List() (*[]model.Sprint, error)
+	Store(sprint *model.Sprint) error
 }
 
 // Handler -
@@ -48,7 +47,7 @@ func (h *Handler) List(request httpdelivery.Req) (httpdelivery.Res, error) {
 
 // Store a sprint
 func (h *Handler) Store(request httpdelivery.Req) (httpdelivery.Res, error) {
-	var sprint *domain.Sprint
+	var sprint *model.Sprint
 	if err := httpdelivery.ParseBody(request, &sprint); err != nil {
 		return httpdelivery.ErrResponse(err, http.StatusBadRequest)
 	}
@@ -66,7 +65,7 @@ func main() {
 		log.Panic(err)
 	}
 	ddb := datastore.NewDynamoDB(conn, os.Getenv("DB_TABLE"))
-	repository := domain.NewSprintRepository(ddb)
+	repository := model.NewSprintRepository(ddb)
 	handler := &Handler{repository}
 	router := httpdelivery.Router(handler)
 	lambda.Start(router)

@@ -1,4 +1,4 @@
-package domain
+package model
 
 import (
 	"github.com/EwanValentine/invoicely/pkg/datastore"

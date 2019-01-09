@@ -7,16 +7,16 @@ import (
 
 	"github.com/aws/aws-lambda-go/lambda"
 
-	"github.com/EwanValentine/invoicely/functions/items/domain"
+	"github.com/EwanValentine/invoicely/functions/items/model"
 	"github.com/EwanValentine/invoicely/pkg/datastore"
-	httpdelivery "github.com/EwanValentine/invoicely/pkg/delivery/http"
+	httpdelivery "github.com/EwanValentine/invoicely/pkg/http"
 )
 
 // ItemRepository -
 type ItemRepository interface {
-	Store(item *domain.Item) error
-	Get(id string) (*domain.Item, error)
-	List() (*[]domain.Item, error)
+	Store(item *model.Item) error
+	Get(id string) (*model.Item, error)
+	List() (*[]model.Item, error)
 }
 
 // Handler -
@@ -48,7 +48,7 @@ func (h *Handler) List(request httpdelivery.Req) (httpdelivery.Res, error) {
 
 // Store a new item
 func (h *Handler) Store(request httpdelivery.Req) (httpdelivery.Res, error) {
-	var item *domain.Item
+	var item *model.Item
 	if err := httpdelivery.ParseBody(request, &item); err != nil {
 		return httpdelivery.ErrResponse(err, http.StatusBadRequest)
 	}
@@ -68,7 +68,7 @@ func main() {
 		log.Panic(err)
 	}
 	ddb := datastore.NewDynamoDB(conn, os.Getenv("DB_TABLE"))
-	repository := domain.NewItemRepository(ddb)
+	repository := model.NewItemRepository(ddb)
 	handler := &Handler{repository}
 	router := httpdelivery.Router(handler)
 	lambda.Start(router)

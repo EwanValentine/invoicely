@@ -4,22 +4,22 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/EwanValentine/invoicely/functions/items/domain"
-	httpdelivery "github.com/EwanValentine/invoicely/pkg/delivery/http"
+	"github.com/EwanValentine/invoicely/functions/items/model"
+	httpdelivery "github.com/EwanValentine/invoicely/pkg/http"
 	"github.com/stretchr/testify/assert"
 )
 
 type MockItemRepository struct{}
 
-func (r *MockItemRepository) Get(id string) (*domain.Item, error) {
-	return &domain.Item{}, nil
+func (r *MockItemRepository) Get(id string) (*model.Item, error) {
+	return &model.Item{}, nil
 }
 
-func (r *MockItemRepository) List() (*[]domain.Item, error) {
-	return &[]domain.Item{}, nil
+func (r *MockItemRepository) List() (*[]model.Item, error) {
+	return &[]model.Item{}, nil
 }
 
-func (r *MockItemRepository) Store(item *domain.Item) error {
+func (r *MockItemRepository) Store(item *model.Item) error {
 	return nil
 }
 

@@ -4,15 +4,15 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/EwanValentine/invoicely/functions/clients/domain"
-	httpdelivery "github.com/EwanValentine/invoicely/pkg/delivery/http"
+	"github.com/EwanValentine/invoicely/functions/clients/model"
+	httpdelivery "github.com/EwanValentine/invoicely/pkg/http"
 	"github.com/stretchr/testify/assert"
 )
 
 type MockClientRepository struct{}
 
-func (r *MockClientRepository) Get(id string) (*domain.Client, error) {
-	return &domain.Client{
+func (r *MockClientRepository) Get(id string) (*model.Client, error) {
+	return &model.Client{
 		ID:          "123",
 		Name:        "some client",
 		Rate:        40,
@@ -20,13 +20,13 @@ func (r *MockClientRepository) Get(id string) (*domain.Client, error) {
 	}, nil
 }
 
-func (r *MockClientRepository) Store(*domain.Client) error {
+func (r *MockClientRepository) Store(*model.Client) error {
 	return nil
 }
 
-func (r *MockClientRepository) List() (*[]domain.Client, error) {
-	return &[]domain.Client{
-		domain.Client{
+func (r *MockClientRepository) List() (*[]model.Client, error) {
+	return &[]model.Client{
+		model.Client{
 			ID:          "123",
 			Name:        "some client",
 			Rate:        40,
