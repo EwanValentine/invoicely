@@ -1,13 +1,12 @@
 package model
 
-// Item model
-type Item struct {
+// Sprint model
+type Sprint struct {
 	ID          string `json:"id"`
-	Status      string `json:"status"`
-	Ticket      string `json:"ticket"`
 	Description string `json:"description"`
 
-	// Duration of time spent on this item, in minutes
-	Duration uint32 `json:"duration"`
-	Sprint   string `json:"sprint"`
+	// StartDate and EndDate are UNIX timestamps
+	StartDate int64  `json:"start_date"`
+	EndDate   int64  `json:"end_date"`
+	Client    string `json:"client"`
 }

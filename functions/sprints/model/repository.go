@@ -1,19 +1,9 @@
 package model
 
 import (
-	"time"
-
 	"github.com/EwanValentine/invoicely/pkg/datastore"
 	uuid "github.com/satori/go.uuid"
 )
-
-// Sprint model
-type Sprint struct {
-	ID        string    `json:"id"`
-	StartDate time.Time `json:"start_date"`
-	EndDate   time.Time `json:"end_date"`
-	Client    string    `json:"client"`
-}
 
 // SprintRepository -
 type SprintRepository struct {
