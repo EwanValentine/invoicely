@@ -8,6 +8,6 @@ type Item struct {
 	Description string `json:"description"`
 
 	// Duration of time spent on this item, in minutes
-	Duration uint32 `json:"duration"`
-	Sprint   string `json:"sprint"`
+	Duration float32 `json:"duration"`
+	Sprint   string  `json:"sprint"`
 }

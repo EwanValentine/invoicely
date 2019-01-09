@@ -85,9 +85,9 @@ functions:
           cors: true
   
   create-item:
-    handler: bin/create-item
+    handler: bin/items
     environment:
-      DB_NAME: Item
+      DB_TABLE: Items
     events:
       - http:
           path: items
@@ -95,9 +95,9 @@ functions:
           cors: true
 
   fetch-items:
-    handler: bin/fetch-item
+    handler: bin/items
     environment:
-      DB_NAME: Item
+      DB_TABLE: Items
     events:
       - http:
           path: items
@@ -105,9 +105,9 @@ functions:
           cors: true
 
   fetch-item:
-    handler: bin/fetch-items
+    handler: bin/items
     environment:
-      DB_NAME: Item
+      DB_TABLE: Items
     events:
       - http:
           path: items/{id}
