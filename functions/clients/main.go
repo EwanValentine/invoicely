@@ -7,7 +7,7 @@ import (
 
 	"github.com/EwanValentine/invoicely/functions/clients/model"
 	"github.com/EwanValentine/invoicely/pkg/datastore"
-	httpdelivery "github.com/EwanValentine/invoicely/pkg/http"
+	helpers "github.com/EwanValentine/invoicely/pkg/http"
 	"github.com/aws/aws-lambda-go/lambda"
 )
 
@@ -24,54 +24,65 @@ type Handler struct {
 }
 
 // Store a resource
-func (h *Handler) Store(request httpdelivery.Req) (httpdelivery.Res, error) {
+func (h *Handler) Store(request helpers.Req) (helpers.Res, error) {
 	var client *model.Client
 
-	if err := httpdelivery.ParseBody(request, &client); err != nil {
-		return httpdelivery.ErrResponse(err, http.StatusBadRequest)
+	if err := helpers.ParseBody(request, &client); err != nil {
+		return helpers.ErrResponse(err, http.StatusBadRequest)
 	}
 
 	if err := h.repository.Store(client); err != nil {
-		return httpdelivery.ErrResponse(err, http.StatusInternalServerError)
+		return helpers.ErrResponse(err, http.StatusInternalServerError)
 	}
 
-	return httpdelivery.Response(map[string]bool{
+	return helpers.Response(map[string]bool{
 		"success": true,
 	}, http.StatusCreated)
 }
 
 // Get a single resource
-func (h *Handler) Get(id string, request httpdelivery.Req) (httpdelivery.Res, error) {
+func (h *Handler) Get(id string, request helpers.Req) (helpers.Res, error) {
 	client, err := h.repository.Get(id)
 	if err != nil {
-		return httpdelivery.ErrResponse(err, http.StatusNotFound)
+		return helpers.ErrResponse(err, http.StatusNotFound)
 	}
 
-	return httpdelivery.Response(map[string]interface{}{
+	return helpers.Response(map[string]interface{}{
 		"client": client,
 	}, http.StatusOK)
 }
 
 // List resources
-func (h *Handler) List(request httpdelivery.Req) (httpdelivery.Res, error) {
+func (h *Handler) List(request helpers.Req) (helpers.Res, error) {
 	clients, err := h.repository.List()
 	if err != nil {
-		return httpdelivery.ErrResponse(err, http.StatusNotFound)
+		return helpers.ErrResponse(err, http.StatusNotFound)
 	}
 
-	return httpdelivery.Response(map[string]interface{}{
+	return helpers.Response(map[string]interface{}{
 		"clients": clients,
 	}, http.StatusOK)
 }
 
 func main() {
+	// Create a connection to the datastore, in this case, DynamoDB
 	conn, err := datastore.CreateConnection(os.Getenv("REGION"))
 	if err != nil {
 		log.Panic(err)
 	}
+
+	// Create a new Dynamodb Table instance
 	ddb := datastore.NewDynamoDB(conn, os.Getenv("DB_TABLE"))
+
+	// Create a repository
 	repository := model.NewClientRepository(ddb)
+
+	// Create the handler instance, with the repository
 	handler := &Handler{repository}
-	router := httpdelivery.Router(handler)
+
+	// Pass the handler into the router
+	router := helpers.Router(handler)
+
+	// Start the Lambda process
 	lambda.Start(router)
 }
